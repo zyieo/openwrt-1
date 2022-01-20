@@ -8,12 +8,26 @@
 #
 name: OpenWrt-CI
 
-on:
-  schedule:
-    - cron: 0 20 2 12 *
+on: 
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Person to greet'
+        required: true
+        default: 'Mona the Octocat'
+      home:
+        description: 'location'
+        required: false
+        default: 'The Octoverse'
   release:
     types: [published]
 
+#on:
+#  schedule:
+#    - cron: 0 20 2 12 *
+#  release:
+#    types: [published]
+#
 jobs:
 
   build_openwrt:
