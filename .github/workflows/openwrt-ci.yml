@@ -56,7 +56,7 @@ jobs:
         run: |
           make defconfig
           rm .config
-          cp ./a300.config ./.config
+          cp ./n300.config ./.config
 
       - name: Make download
         run: |
