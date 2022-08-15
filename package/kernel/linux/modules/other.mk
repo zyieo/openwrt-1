@@ -119,6 +119,24 @@ endef
 $(eval $(call KernelPackage,btmrvl))
 
 
+define KernelPackage/btsdio
+  SUBMENU:=$(OTHER_MENU)
+  TITLE:=Bluetooth HCI SDIO driver
+  DEPENDS:=+kmod-bluetooth +kmod-mmc
+  KCONFIG:= \
+	CONFIG_BT_HCIBTSDIO
+  FILES:= \
+	$(LINUX_DIR)/drivers/bluetooth/btsdio.ko
+  AUTOLOAD:=$(call AutoProbe,btsdio)
+endef
+
+define KernelPackage/btsdio/description
+ Kernel support for Bluetooth device with SDIO interface
+endef
+
+$(eval $(call KernelPackage,btsdio))
+
+
 define KernelPackage/dma-buf
   SUBMENU:=$(OTHER_MENU)
   TITLE:=DMA shared buffer support
@@ -383,7 +401,6 @@ define KernelPackage/mmc
 	CONFIG_MMC_BLOCK \
 	CONFIG_MMC_DEBUG=n \
 	CONFIG_MMC_UNSAFE_RESUME=n \
-	CONFIG_MMC_BLOCK_BOUNCE=y \
 	CONFIG_MMC_TIFM_SD=n \
 	CONFIG_MMC_WBSD=n \
 	CONFIG_SDIO_UART=n
@@ -673,22 +690,6 @@ endef
 
 $(eval $(call KernelPackage,rtc-pcf2127))
 
-define KernelPackage/rtc-pt7c4338
-  SUBMENU:=$(OTHER_MENU)
-  TITLE:=Pericom PT7C4338 RTC support
-  DEFAULT:=m if ALL_KMODS && RTC_SUPPORT
-  DEPENDS:=+kmod-i2c-core
-  KCONFIG:=CONFIG_RTC_DRV_PT7C4338 \
-	CONFIG_RTC_CLASS=y
-  FILES:=$(LINUX_DIR)/drivers/rtc/rtc-pt7c4338.ko
-  AUTOLOAD:=$(call AutoProbe,rtc-pt7c4338)
-endef
-
-define KernelPackage/rtc-pt7c4338/description
- Kernel module for Pericom PT7C4338 i2c RTC chip
-endef
-
-$(eval $(call KernelPackage,rtc-pt7c4338))
 
 define KernelPackage/rtc-rs5c372a
   SUBMENU:=$(OTHER_MENU)
@@ -1190,9 +1191,7 @@ define KernelPackage/keys-trusted
   TITLE:=TPM trusted keys on kernel keyring
   DEPENDS:=@KERNEL_KEYS +kmod-crypto-hash +kmod-crypto-hmac +kmod-crypto-sha1 +kmod-tpm
   KCONFIG:=CONFIG_TRUSTED_KEYS
-  FILES:= \
-	  $(LINUX_DIR)/security/keys/trusted.ko@lt5.10 \
-	  $(LINUX_DIR)/security/keys/trusted-keys/trusted.ko@ge5.10
+  FILES:= $(LINUX_DIR)/security/keys/trusted-keys/trusted.ko
   AUTOLOAD:=$(call AutoLoad,01,trusted-keys,1)
 endef
 
@@ -1274,70 +1273,23 @@ endef
 $(eval $(call KernelPackage,tpm-i2c-infineon))
 
 
-define KernelPackage/w83627hf-wdt
+define KernelPackage/i6300esb-wdt
   SUBMENU:=$(OTHER_MENU)
-  TITLE:=Winbond 83627HF Watchdog Timer
-  KCONFIG:=CONFIG_W83627HF_WDT
-  FILES:=$(LINUX_DIR)/drivers/$(WATCHDOG_DIR)/w83627hf_wdt.ko
-  AUTOLOAD:=$(call AutoLoad,50,w83627hf-wdt,1)
+  TITLE:=Intel 6300ESB Timer/Watchdog
+  DEPENDS:=@PCI_SUPPORT @!SMALL_FLASH
+  KCONFIG:=CONFIG_I6300ESB_WDT \
+	   CONFIG_WATCHDOG_CORE=y
+  FILES:=$(LINUX_DIR)/drivers/$(WATCHDOG_DIR)/i6300esb.ko
+  AUTOLOAD:=$(call AutoLoad,50,i6300esb,1)
 endef
 
-define KernelPackage/w83627hf-wdt/description
-  Kernel module for Winbond 83627HF Watchdog Timer
+define KernelPackage/i6300esb-wdt/description
+  Kernel module for the watchdog timer built into the Intel
+  6300ESB controller hub. Also used by QEMU/libvirt.
 endef
 
-$(eval $(call KernelPackage,w83627hf-wdt))
+$(eval $(call KernelPackage,i6300esb-wdt))
 
-
-define KernelPackage/itco-wdt
-  SUBMENU:=$(OTHER_MENU)
-  TITLE:=Intel iTCO Watchdog Timer
-  KCONFIG:=CONFIG_ITCO_WDT \
-           CONFIG_ITCO_VENDOR_SUPPORT=y
-  FILES:=$(LINUX_DIR)/drivers/$(WATCHDOG_DIR)/iTCO_wdt.ko \
-         $(LINUX_DIR)/drivers/$(WATCHDOG_DIR)/iTCO_vendor_support.ko
-  AUTOLOAD:=$(call AutoLoad,50,iTCO_vendor_support iTCO_wdt,1)
-endef
-
-define KernelPackage/itco-wdt/description
-  Kernel module for Intel iTCO Watchdog Timer
-endef
-
-$(eval $(call KernelPackage,itco-wdt))
-
-
-define KernelPackage/it87-wdt
-  SUBMENU:=$(OTHER_MENU)
-  TITLE:=ITE IT87 Watchdog Timer
-  KCONFIG:=CONFIG_IT87_WDT
-  FILES:=$(LINUX_DIR)/drivers/$(WATCHDOG_DIR)/it87_wdt.ko
-  AUTOLOAD:=$(call AutoLoad,50,it87-wdt,1)
-  MODPARAMS.it87-wdt:= \
-	nogameport=1 \
-	nocir=1
-endef
-
-define KernelPackage/it87-wdt/description
-  Kernel module for ITE IT87 Watchdog Timer
-endef
-
-$(eval $(call KernelPackage,it87-wdt))
-
-
-define KernelPackage/f71808e-wdt
-  SUBMENU:=$(OTHER_MENU)
-  TITLE:=Fintek F718xx/F818xx Watchdog Timer
-  DEPENDS:=@TARGET_x86
-  KCONFIG:=CONFIG_F71808E_WDT
-  FILES:=$(LINUX_DIR)/drivers/$(WATCHDOG_DIR)/f71808e_wdt.ko
-  AUTOLOAD:=$(call AutoProbe,f71808e-wdt,1)
-endef
-
-define KernelPackage/f71808e-wdt/description
-  Kernel module for the watchdog timer found on many Fintek Super-IO chips.
-endef
-
-$(eval $(call KernelPackage,f71808e-wdt))
 
 define KernelPackage/mhi-bus
   SUBMENU:=$(OTHER_MENU)

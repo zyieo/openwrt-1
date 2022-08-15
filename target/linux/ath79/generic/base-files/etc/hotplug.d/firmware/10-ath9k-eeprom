@@ -12,6 +12,8 @@ case "$FIRMWARE" in
 	8dev,lima)
 		caldata_extract "art" 0x1000 0x800
 		;;
+	asus,pl-ac56|\
+	asus,rp-ac51|\
 	asus,rp-ac66)
 		caldata_extract "art" 0x1000 0x440
 		;;
@@ -115,16 +117,7 @@ case "$FIRMWARE" in
 	netgear,wnr2200-16m|\
 	pcs,cap324|\
 	tplink,tl-wr2543-v1|\
-	tplink,tl-wr842n-v1|\
-	ubnt,airrouter|\
-	ubnt,bullet-m-ar7240|\
-	ubnt,bullet-m-ar7241|\
-	ubnt,nanobridge-m|\
-	ubnt,nanostation-loco-m|\
-	ubnt,nanostation-m|\
-	ubnt,picostation-m|\
-	ubnt,powerbridge-m|\
-	ubnt,rocket-m)
+	tplink,tl-wr842n-v1)
 		caldata_extract "art" 0x1000 0x1000
 		;;
 	openmesh,mr600-v1|\
@@ -152,7 +145,8 @@ case "$FIRMWARE" in
 "ath9k-eeprom-pci-0000:00:11.0.bin")
 	case $board in
 	buffalo,wzr-600dhp|\
-	buffalo,wzr-hp-ag300h)
+	buffalo,wzr-hp-ag300h|\
+	netgear,wndap360)
 		caldata_extract "art" 0x1000 0xeb8
 		;;
 	dlink,dir-825-b1)
@@ -170,7 +164,8 @@ case "$FIRMWARE" in
 "ath9k-eeprom-pci-0000:00:12.0.bin")
 	case $board in
 	buffalo,wzr-600dhp|\
-	buffalo,wzr-hp-ag300h)
+	buffalo,wzr-hp-ag300h|\
+	netgear,wndap360)
 		caldata_extract "art" 0x5000 0xeb8
 		;;
 	dlink,dir-825-b1)
