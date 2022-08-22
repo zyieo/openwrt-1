@@ -63,6 +63,7 @@ jobs:
         run: |
           rm ./feeds.conf.default
           cp ./kenzo.feeds.conf.default ./feeds.conf.default
+          ./scripts/feeds clean
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
@@ -70,7 +71,7 @@ jobs:
         run: |
           make defconfig
           rm .config
-          cp ./a300.config ./.config
+          cp ./run.config ./.config
 
       - name: Make download
         run: |
