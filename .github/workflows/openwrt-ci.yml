@@ -61,16 +61,16 @@ jobs:
 
       - name: Update feeds
         run: |
-          rm ./feeds.conf.default
-          cp ./run.feeds.conf.default ./feeds.conf.default
+          #1#rm ./feeds.conf.default
+          #1#cp ./run.feeds.conf.default ./feeds.conf.default
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
       - name: Generate configuration file
         run: |
           make defconfig
-          rm .config
-          cp ./run.config ./.config
+          #2# rm .config
+          #2# cp ./run.config ./.config
 
       - name: Make download
         run: |
