@@ -73,8 +73,9 @@ jobs:
       - name: Generate configuration file
         run: |
           make defconfig
-          rm .config
-          cp ./run.config ./.config
+          ##cp .config def.config
+          ##rm .config
+          #2#cp ./run.config ./.config
 
       - name: Make download
         run: |
