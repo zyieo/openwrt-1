@@ -35,8 +35,8 @@ jobs:
 
     name: Build OpenWrt firmware
 
-    #runs-on: ubuntu-latest
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
+    #runs-on: ubuntu-18.04
 
     if: github.event.repository.owner.id == github.event.sender.id
 
@@ -64,8 +64,9 @@ jobs:
 
       - name: Update feeds
         run: |
-          rm ./feeds.conf.default
-          cp ./run.feeds.conf.default ./feeds.conf.default
+          #rm ./feeds.conf.default
+          cp ./feeds.conf.default ./org.feeds.conf.default
+          #cp ./run.feeds.conf.default ./feeds.conf.default
           ./scripts/feeds clean
           ./scripts/feeds update -a
           ./scripts/feeds install -a
