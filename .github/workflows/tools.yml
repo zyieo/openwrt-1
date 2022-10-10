@@ -110,7 +110,7 @@ jobs:
         run: |
           chown -R buildbot:buildbot openwrt
 
-      - name: Set AUTOREMOVE config for tools container
+      - name: Set configs for tools container
         if: github.event_name == 'push'
         shell: su buildbot -c "sh -e {0}"
         working-directory: openwrt
@@ -118,6 +118,7 @@ jobs:
           touch .config
           echo CONFIG_DEVEL=y >> .config
           echo CONFIG_AUTOREMOVE=y >> .config
+          echo CONFIG_CCACHE=y >> .config
 
       - name: Make prereq
         shell: su buildbot -c "sh -e {0}"
@@ -167,6 +168,12 @@ jobs:
       packages: write
 
     steps:
+      - name: Set lower case owner name
+        env:
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          echo "OWNER_LC=${OWNER,,}" >> "$GITHUB_ENV"
+
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -190,5 +197,5 @@ jobs:
         with:
           context: openwrt
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/tools:latest
+          tags: ghcr.io/${{ env.OWNER_LC }}/tools:latest
           file: openwrt/.github/workflows/Dockerfile.tools
