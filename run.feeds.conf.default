@@ -19,7 +19,9 @@ src-git-full telephony https://git.openwrt.org/feed/telephony.git
 
 ##src-git kenzo https://github.com/kenzok8/openwrt-packages
 ##src-git small https://github.com/kenzok8/small
-src-git passwall_packages https://github.com/xiaorouji/openwrt-passwall.git;packages
-src-git passwall_luci https://github.com/xiaorouji/openwrt-passwall.git;luci
+src-git kenzo https://github.com/zyieo/openwrt-packages
+src-git small https://github.com/zyieo/small
+src-git passwall_packages https://github.com/zyieo/openwrt-passwall.git;packages
+src-git passwall_luci https://github.com/zyieo/openwrt-passwall.git;luci
 ##src-git passwall_packages https://github.com/xiaorouji/openwrt-passwall.git;packages
 #src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2.git
